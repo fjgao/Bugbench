@@ -971,8 +971,10 @@ dirswitch (dir, repos)
 	return;
     }
 
-    if (dir_name != NULL)
-	free (dir_name);
+    if (dir_name != NULL){
+        memset(dir_name, 0, strlen (server_temp_dir) + dir_len + 40);
+        free (dir_name);
+    }
 
     dir_len = strlen (dir);
 

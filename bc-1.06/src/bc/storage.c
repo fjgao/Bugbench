@@ -173,7 +173,7 @@ more_arrays ()
 
 
   /* Initialize the new elements. */
-  for (; indx < v_count; indx++)
+  for (; indx < a_count; indx++)
     arrays[indx] = NULL;
 
   /* Free the old elements. */

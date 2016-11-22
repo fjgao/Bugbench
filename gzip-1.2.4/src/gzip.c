@@ -48,6 +48,7 @@ static char  *license_msg[] = {
 static char rcsid[] = "$Id: gzip.c,v 0.24 1993/06/24 10:52:07 jloup Exp $";
 #endif
 
+#include <assert.h>
 #include <ctype.h>
 #include <sys/types.h>
 #include <signal.h>
@@ -824,9 +825,13 @@ local int get_istat(iname, sbuf)
 #ifdef NO_MULTIPLE_DOTS
     char *dot; /* pointer to ifname extension, or NULL */
 #endif
-
-    strcpy(ifname, iname);
-
+    //patch
+    if (strlen(iname) > MAX_PATH_LEN - 1){
+        fprintf(stderr, "buffer size not enough [by patch]\n");
+        exit(1);
+    }
+    strncpy(ifname, iname, sizeof(iname));
+    
     /* If input file exists, return OK. */
     if (do_stat(ifname, sbuf) == 0) return OK;
 

@@ -577,7 +577,8 @@ lookup (name, namekind)
       a_names[id->a_name] = name;
       if (id->a_name < MAX_STORE)
 	{
-	  if (id->a_name >= a_count)
+      // patch
+	  if (id->a_name >= (a_count - 1))
 	    more_arrays ();
 	  return (-id->a_name);
 	}

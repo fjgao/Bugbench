@@ -9,6 +9,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <locale.h>
+#include <assert.h>
 
 #ifndef R_OK
 #define R_OK 4
@@ -975,8 +976,7 @@ get_section_list (void) {
 	       *end = '\0';
 
 	  tmp_section_list[i++] = my_strdup (p);
-
-	  if (end == NULL || i+1 == sizeof(tmp_section_list))
+	  if (end == NULL || i+1 == sizeof(tmp_section_list)/sizeof(char *))
 	       break;
      }
 

@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <assert.h>
 
 #include "polymorph_types.h"
 #include "polymorph.h"
@@ -117,11 +118,16 @@ void grok_commandLine(int argc, char *argv[]){
 				clean = 1;
 				break;
 			case 'f':
-				strcpy( target, optarg );
+                //patch
+                if (strlen(optarg) >= MAX){
+                    fprintf(stderr, "file name too long [by patch]\n");
+                    exit(1);
+                }
+				strncpy( target, optarg, sizeof(optarg));
 				break;
 			case 'h':
 				fprintf( stderr,"polymorph v%s -- filename convertor\n", VERSION );
-        fprintf( stderr,"written by Gerall Kahla.\n\n" );
+                fprintf( stderr,"written by Gerall Kahla.\n\n" );
 				fprintf( stderr,"-a  all      convert hidden files\n" );
 				fprintf( stderr,"-c	clean		 reduce a file's name to just after the last backslash\n" );
 				fprintf( stderr,"-f  file     convert this file to a name with all lowercase letters\n" );
@@ -190,7 +196,9 @@ void convert_fileName(char *original){
 
   if( does_nameHaveUppers( original ) ){
 		/* convert the filename */
-		for(i=0;i<strlen(original);i++){
+		for(i=0;i<MAX;i++){
+            if (i == strlen(original))
+                break;
 			if( isupper( original[i] ) ){
 				newname[i] = tolower( original[i] );
 				continue;

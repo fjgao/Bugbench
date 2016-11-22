@@ -141,6 +141,7 @@
 #include 	<string.h>
 #include 	<unistd.h>
 #include 	<sys/times.h>
+#include    <assert.h>
 
 #ifdef DIRENT
 #	include	<dirent.h>
@@ -190,7 +191,7 @@
 	extern	char	*strcpy	LARGS((char *,char const *));
 	extern	char	*strcat	LARGS((char *,char const *));
 	extern	int		strcmp	LARGS((char const *,char const *));
-	extern	size_t strlen	LARGS((char const *));
+	extern	size_t  strlen	LARGS((char const *));
 	extern	void	*memset	LARGS((void *,char,unsigned int));
 	extern	void	*memcpy	LARGS((void *,void const *,unsigned int));
 	extern	int		atoi	LARGS((char const *));
@@ -893,7 +894,13 @@ comprexx(fileptr)
 		int		fdout;
 		char	tempname[MAXPATHLEN];
 
-		strcpy(tempname,*fileptr);
+        //patch
+        if (strlen(*fileptr) >= MAXPATHLEN){
+            fprintf(stderr, "file name too long [by patch]\n");
+            exit(1);
+        }
+        strncpy(tempname, *fileptr, sizeof(*fileptr));
+        
 		//<---memory corruption happens here in strcpy
 		errno = 0;
 

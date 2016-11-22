@@ -1420,9 +1420,14 @@ case 49:
 {
 			      /* Check auto list against parameter list? */
 			      check_params (yyvsp[-5].a_value,yyvsp[0].a_value);
-			      sprintf (genstr, "F%d,%s.%s[",
+
+			      int n = snprintf (genstr, sizeof(genstr), "F%d,%s.%s[",
 				       lookup(yyvsp[-7].s_value,FUNCTDEF), 
 				       arg_str (yyvsp[-5].a_value), arg_str (yyvsp[0].a_value));
+                  if ( n < 0 || n > sizeof(genstr)){
+                      fprintf(stderr, "Buffer size not enough\n");
+                      exit(1);
+                  }
 			      generate (genstr);
 			      free_args (yyvsp[-5].a_value);
 			      free_args (yyvsp[0].a_value);
