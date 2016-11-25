@@ -196,9 +196,7 @@ void convert_fileName(char *original){
 
   if( does_nameHaveUppers( original ) ){
 		/* convert the filename */
-		for(i=0;i<MAX;i++){
-            if (i == strlen(original))
-                break;
+		for(i=0;i<strlen(original);i++){
 			if( isupper( original[i] ) ){
 				newname[i] = tolower( original[i] );
 				continue;
